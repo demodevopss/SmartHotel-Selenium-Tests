@@ -1,0 +1,37 @@
+# Azure Pipelines CI for a Python Selenium Project
+
+trigger:
+- main  # 'main' branch'ine yapılan her push'ta tetiklenir
+
+pool:
+  vmImage: 'ubuntu-latest' # Testleri çalıştırmak için kullanılacak sanal makine imajı
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.10' # Kullanılacak Python sürümü
+  displayName: 'Use Python 3.10'
+
+- script: |
+    sudo apt-get update
+    sudo apt-get install -y chromium-browser chromium-chromedriver
+  displayName: 'Install Chromium and ChromeDriver'
+
+- script: |
+    python -m venv venv
+    source venv/bin/activate
+    pip install -r requirements.txt
+  displayName: 'Install Python dependencies'
+
+- script: |
+    source venv/bin/activate
+    # Testleri çalıştır ve sonuçları JUnit XML formatında kaydet
+    pytest --junitxml=./TEST-RESULTS.xml tests/test_app.py
+  displayName: 'Run Pytest'
+  continueOnError: true # Testler başarısız olsa bile sonraki adımların çalışmasına izin ver
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFiles: '**/TEST-RESULTS.xml'
+    testRunTitle: 'Python Selenium Test Results'
+  displayName: 'Publish Test Results'
