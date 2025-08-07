@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Run CI/CD Pipeline') {
             steps {
-                // Run the main CI script
+                sh 'chmod +x run_ci.sh' // Make the script executable
                 sh './run_ci.sh'
             }
         }
@@ -12,9 +12,8 @@ pipeline {
 
     post {
         always {
-            // Always publish test results and stop K3s
             junit 'TEST-RESULTS.xml'
-            sh 'sudo k3s-killall.sh' // Stop K3s
+            sh 'sudo k3s-killall.sh'
         }
     }
 }
