@@ -11,7 +11,7 @@ docker build -t smarthotel-app:latest .
 
 # Load Docker image into K3s's containerd
 echo "--- Loading Docker image into K3s ---"
-docker save smarthotel-app:latest | sudo k3s ctr images import -
+echo '1' | sudo -S k3s ctr images import -
 
 # Deploy to Kubernetes
 echo "--- Deploying to Kubernetes ---"
