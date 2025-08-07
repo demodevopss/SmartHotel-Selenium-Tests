@@ -3,7 +3,7 @@ set -e # Exit immediately if a command exits with a non-zero status.
 
 # Ensure K3s is running and kubectl is configured
 echo "--- Ensuring K3s is running and kubectl is configured ---"
-export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+export KUBECONFIG=/var/lib/jenkins/.kube/config
 
 # Build Docker image
 echo "--- Building Docker image ---"
