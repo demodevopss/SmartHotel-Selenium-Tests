@@ -5,13 +5,20 @@ set -e # Exit immediately if a command exits with a non-zero status.
 echo "--- Ensuring K3s is running and kubectl is configured ---"
 export KUBECONFIG=/var/lib/jenkins/.kube/config
 
+# Wait for K3s to be ready
+echo "--- Waiting for K3s to be ready ---"
+until kubectl get nodes > /dev/null 2>&1; do
+  echo "Waiting for K3s nodes to be ready..."
+  sleep 5
+done
+echo "K3s nodes are ready."
+
 # Build Docker image
 echo "--- Building Docker image ---"
 docker build -t smarthotel-app:latest .
 
 # Load Docker image into K3s's containerd
 echo "--- Loading Docker image into K3s ---"
-sleep 10 # Add a delay to allow containerd to fully start
 docker save smarthotel-app:latest | sudo k3s ctr images import -
 
 # Deploy to Kubernetes
