@@ -12,9 +12,9 @@ pipeline {
 
     post {
         always {
-            // Always publish test results and stop Minikube
+            // Always publish test results and stop K3s
             junit 'TEST-RESULTS.xml'
-            sh 'minikube stop'
+            sh 'sudo k3s-killall.sh' // Stop K3s
         }
     }
 }
