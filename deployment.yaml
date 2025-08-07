@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smarthotel-deployment
+  labels:
+    app: smarthotel
+spec:
+  replicas: 1 # Start with one replica of the application
+  selector:
+    matchLabels:
+      app: smarthotel
+  template:
+    metadata:
+      labels:
+        app: smarthotel
+    spec:
+      containers:
+      - name: smarthotel-web
+        image: smarthotel-app:latest # The Docker image we will build
+        imagePullPolicy: IfNotPresent # Only pull the image if it's not already on the node
+        ports:
+        - containerPort: 80 # The port the container exposes
