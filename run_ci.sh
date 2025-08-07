@@ -31,6 +31,6 @@ echo "--- Running Selenium tests ---"
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-pytest tests/test_app.py --junitxml=./TEST-RESULTS.xml
+pytest tests/test_app.py --junitxml=./TEST-RESULTS.xml --webdriver-path=/usr/bin/chromedriver --webdriver-log-path=chromedriver.log
 
 # The post-build steps will be handled by Jenkinsfile
