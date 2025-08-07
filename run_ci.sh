@@ -11,6 +11,7 @@ docker build -t smarthotel-app:latest .
 
 # Load Docker image into K3s's containerd
 echo "--- Loading Docker image into K3s ---"
+sleep 10 # Add a delay to allow containerd to fully start
 docker save smarthotel-app:latest | sudo k3s ctr images import -
 
 # Deploy to Kubernetes
@@ -31,6 +32,6 @@ echo "--- Running Selenium tests ---"
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-pytest tests/test_app.py --junitxml=./TEST-RESULTS.xml --webdriver-path=/usr/bin/chromedriver --webdriver-log-path=chromedriver.log
+pytest tests/test_app.py --junitxml=./TEST-RESULTS.xml
 
 # The post-build steps will be handled by Jenkinsfile
